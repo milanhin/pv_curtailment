@@ -60,7 +60,7 @@ class PvCurtailmentConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         CONNECT_SCHEMA = vol.Schema(
             {
                 vol.Required(CONF_IP): str,
-                vol.Required(CONF_PORT): vol.Coerce(int),
+                vol.Required(CONF_PORT, default=502): vol.Coerce(int),
                 vol.Required(CONF_SLAVE_ID, default=map_default_ID(brand=self.brand)): vol.Coerce(int),
             }
         )
