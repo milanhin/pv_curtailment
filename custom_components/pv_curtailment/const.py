@@ -26,7 +26,7 @@ class Brand(StrEnum):
     """
     SMA = "SMA"
     SOLAREDGE = "SolarEdge"
-    GENERAL_SUNSPEC = "General SunSpec"
+    GENERAL_SUNSPEC = "General SunSpec (Beta)"
 
 # default slave ID mapping for each Brand:
 SLAVE_ID_MAP = {
