@@ -28,14 +28,14 @@ USER_SCHEMA = vol.Schema(
 
 ENERGY_METER_SCHEMA = vol.Schema(
     {
-        vol.Required(CONF_PWR_IMP_ENT_ID): EntitySelector(EntityFilterSelectorConfig(domain="sensor")),
-        vol.Required(CONF_PWR_EXP_ENT_ID): EntitySelector(EntityFilterSelectorConfig(domain="sensor")),
+        vol.Required(CONF_PWR_IMP_ENT_ID): EntitySelector(EntityFilterSelectorConfig(domain=["sensor", "input_number", "number"])),
+        vol.Required(CONF_PWR_EXP_ENT_ID): EntitySelector(EntityFilterSelectorConfig(domain=["sensor", "input_number", "number"])),
     }
 )
 
 INJ_TARIFF_SCHEMA = vol.Schema(
     {
-        vol.Required(CONF_INJ_TARIFF_ENT_ID): EntitySelector(EntityFilterSelectorConfig(domain="sensor")),
+        vol.Required(CONF_INJ_TARIFF_ENT_ID): EntitySelector(EntityFilterSelectorConfig(domain=["sensor", "input_number", "number"])),
     }
 )
 
