@@ -3,6 +3,7 @@ from enum import StrEnum
 DOMAIN = "pv_curtailment"
 COORDINATOR = "coordinator"
 CONFIG = "config"
+SERIAL_NUMBER = "serial_number"
 
 CONF_INJ_TARIFF_ENT_ID = "injection_tariff_entity_id"
 CONF_PWR_IMP_ENT_ID = "power_import_entity_id"
@@ -36,6 +37,7 @@ SLAVE_ID_MAP = {
 }
 
 # SunSpec model IDs
+COMMON_MID = 1
     # 100 series
 NAMEPLATE_MID = 120
 INVERTER_SINGLE_PHASE_MID = 101
@@ -48,6 +50,7 @@ DER_CAPACITY_MID = 702
 DER_CTL_AC_MID = 704
 
 # SunSpec offsets (See information model reference: https://sunspec.org/specifications/)
+SN_OFFSET = 50
     # 100 series
 WRTG_OFFSET_1XX = 3
 WMAXLIMPCT_OFFSET_1XX = 5

@@ -8,7 +8,7 @@ from homeassistant.const import UnitOfPower
 from homeassistant import config_entries
 
 from .coordinator import PvCurtailingCoordinator
-from .const import DOMAIN, COORDINATOR
+from .const import DOMAIN, COORDINATOR, SERIAL_NUMBER
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -32,6 +32,11 @@ class SetpointSensor(CoordinatorEntity, SensorEntity): # pyright: ignore[reportI
     def __init__(self, coordinator: PvCurtailingCoordinator) -> None:
         super().__init__(coordinator=coordinator)
         self.coordinator = coordinator
+
+        # Set unique ID
+        hass = self.coordinator.hass
+        serial_number = hass.data[DOMAIN][SERIAL_NUMBER]
+        self._attr_unique_id = serial_number + "_setpoint_sensor"
     
     @property
     def native_value(self) -> float | None: # pyright: ignore[reportIncompatibleVariableOverride]
@@ -47,6 +52,11 @@ class InverterPowerSensor(CoordinatorEntity, SensorEntity): # pyright: ignore[re
     def __init__(self, coordinator: PvCurtailingCoordinator) -> None:
         super().__init__(coordinator=coordinator)
         self.coordinator = coordinator
+
+        # Set unique ID
+        hass = self.coordinator.hass
+        serial_number = hass.data[DOMAIN][SERIAL_NUMBER]
+        self._attr_unique_id = serial_number + "_inverter_power_sensor"
 
     @property
     def native_value(self) -> float | None: # pyright: ignore[reportIncompatibleVariableOverride]

@@ -30,6 +30,7 @@ class PvCurtailingCoordinator(DataUpdateCoordinator):
             config_entry=None,
             update_interval=datetime.timedelta(seconds=UPDATE_INTERVAL),
         )
+        self.hass = hass
         self.setpoint_W: int | None = None          # Holds setpoint in Watt
         self.last_setpoint_W: int | None = None     # Last sent setpoint
         self.W: float | None = None                 # Holds power of inverter
@@ -90,6 +91,10 @@ class PvCurtailingCoordinator(DataUpdateCoordinator):
         if rating != None:
             self.WRtg = int(rating)
         _LOGGER.info(f"Max rated power read from SunSpec device: {rating} W")
+
+        # Get Serial Number of inverter and store it to use as unique ID for entities
+        serial_number = self.offset_get(d=self.d, mid=COMMON_MID, trg_offset=SN_OFFSET)
+        self.hass.data[DOMAIN][SERIAL_NUMBER] = str(serial_number)
 
         # SunSpec setup successful
         self.sunspec_setup_success = True

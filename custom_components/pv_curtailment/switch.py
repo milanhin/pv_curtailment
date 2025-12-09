@@ -8,7 +8,7 @@ from homeassistant import config_entries
 
 from .coordinator import PvCurtailingCoordinator
 
-from .const import DOMAIN, COORDINATOR
+from .const import DOMAIN, COORDINATOR, SERIAL_NUMBER
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -19,6 +19,11 @@ class CurtailmentSwitch(CoordinatorEntity, SwitchEntity): # pyright: ignore[repo
         super().__init__(coordinator=coordinator)
         self.coordinator = coordinator
         self._attr_is_on = self.coordinator.system_switch
+        self.hass = coordinator.hass
+
+        # set unique ID
+        serial_number: str = self.hass.data[DOMAIN][SERIAL_NUMBER]
+        self._attr_unique_id = serial_number + "_switch"
     
     @property
     def is_on(self) -> bool: # pyright: ignore[reportIncompatibleVariableOverride]
