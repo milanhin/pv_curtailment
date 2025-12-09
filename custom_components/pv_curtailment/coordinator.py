@@ -61,7 +61,7 @@ class PvCurtailingCoordinator(DataUpdateCoordinator):
         self.IP:             str = config[CONF_CONNECT_STEP][CONF_IP]
         self.PORT                = int(config[CONF_CONNECT_STEP][CONF_PORT])
         self.SLAVE_ID            = int(config[CONF_CONNECT_STEP][CONF_SLAVE_ID])
-        self.brand: Brand        = Brand(str(config[CONF_USER_STEP][CONF_INVERTER_BRAND]).lower())
+        self.brand: Brand        = Brand(str(config[CONF_USER_STEP][CONF_INVERTER_BRAND]))
     
     async def _async_setup(self) -> None:
         """Set up coordinator"""
