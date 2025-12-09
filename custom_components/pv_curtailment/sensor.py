@@ -21,7 +21,7 @@ async def async_setup_entry(
     pv_coordinator = hass.data[DOMAIN][COORDINATOR]
 
     async_add_entities([SetpointSensor(coordinator=pv_coordinator), InverterPowerSensor(coordinator=pv_coordinator)])
-    _LOGGER.info("SunSpec Setpoint sensors were set up")
+    _LOGGER.info("PV Curtailment sensors were added")
 
 class SetpointSensor(CoordinatorEntity, SensorEntity): # pyright: ignore[reportIncompatibleVariableOverride]
     """Sensor to store and show power setpoint for inverter"""

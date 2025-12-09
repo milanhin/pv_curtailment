@@ -42,4 +42,4 @@ async def async_setup_entry(
     """Set up switch from config entry"""
     pv_coordinator = hass.data[DOMAIN][COORDINATOR]
     async_add_entities([CurtailmentSwitch(pv_coordinator)])
-    _LOGGER.info("SunSpec setpoint switch was set up")
+    _LOGGER.info("PV Curtailment switch was added")

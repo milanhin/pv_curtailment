@@ -17,7 +17,6 @@ async def async_setup_entry(
     """Set up platform from ConfigEntry"""
     hass.data.setdefault(DOMAIN, {})
     hass.data[DOMAIN][CONFIG] = entry.data
-    _LOGGER.info(entry.data)
 
     pv_coordinator = PvCurtailingCoordinator(
         hass=hass, config_entry=entry

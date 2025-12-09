@@ -106,13 +106,13 @@ class PvCurtailingCoordinator(DataUpdateCoordinator):
         pwr_import_state = self.hass.states.get(self.pwr_imp_ent_id)
         pwr_export_state = self.hass.states.get(self.pwr_exp_ent_id)
 
-        # temporary type fix
+        # Check if dependant sensors have states
         if (
             inj_tariff_state == None or
             pwr_import_state == None or
             pwr_export_state == None
         ):
-            _LOGGER.error("An entity needed for this integration has no value")
+            _LOGGER.warning("An entity needed for this integration has no value")
             return {}
 
         # Exctract data from dependant sensors
@@ -180,12 +180,10 @@ class PvCurtailingCoordinator(DataUpdateCoordinator):
         
         if pwr_import > 5 and inj_tariff < INJ_CUTOFF_TARIFF:
             sp = min(pwr_PV + pwr_import, pwr_rated)  # don't go above max power
-            _LOGGER.info(f"PV setpoint calculated during curtailing and importing from grid, PV: {pwr_PV} W, import: {pwr_import} W, export: {pwr_export} W, setpoint: {sp} W")
             return round(sp)
 
         else: # injecting during negative price
             sp = max(pwr_PV - pwr_export, 0)  # no negative power
-            _LOGGER.info(f"PV setpoint calculated during curtailing and exporting to grid, PV: {pwr_PV} W, import: {pwr_import} W, export: {pwr_export} W, setpoint: {sp} W")
             return round(sp)
     
     def calc_setpoint_pct(self, sp_W: int, pwr_rated: float) -> float:
@@ -204,7 +202,7 @@ class PvCurtailingCoordinator(DataUpdateCoordinator):
                     await self.try_reconnect()
                 val = point.cvalue
                 return val
-        _LOGGER.error(f"SunSpec point with model id {mid} and offset {trg_offset} was not found and could not be read")
+        _LOGGER.error(f"SunSpec point with model id: {mid}, and offset: {trg_offset}, was not found and could not be read")
         return None
     
     def offset_get(self, d, mid: int, trg_offset: int) -> float | None:
@@ -213,7 +211,7 @@ class PvCurtailingCoordinator(DataUpdateCoordinator):
             if point.offset == trg_offset:
                 val = point.cvalue
                 return val
-        _LOGGER.error(f"SunSpec point with model id {mid} and offset {trg_offset} was not found")
+        _LOGGER.error(f"SunSpec point with model id: {mid}, and offset: {trg_offset}, was not found")
         return None
     
     def set_models_and_offsets(self, d) -> None:
@@ -278,7 +276,7 @@ class PvCurtailingCoordinator(DataUpdateCoordinator):
                         _LOGGER.info(f"Setpoint sent to inverter: {sp_pct} %")
                         self.last_setpoint_W = self.setpoint_W
                     except Exception as e:
-                        _LOGGER.error(f"Failed to write setpoint to inverter: {e}")
+                        _LOGGER.error(f"Failed to write setpoint to inverter. Write error: {e}")
                         return
                 
                 #SolarEdge
