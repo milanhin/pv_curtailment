@@ -23,15 +23,16 @@ UPDATE_INTERVAL = 10  # [s]
 class Brand(StrEnum):
     """
     All supported brands should be configured here
-    Names of brands are in lower case for easier comparison
     """
-    SMA = "sma"
-    SOLAREDGE = "solaredge"
+    SMA = "SMA"
+    SOLAREDGE = "SolarEdge"
+    GENERAL_SUNSPEC = "General SunSpec"
 
 # default slave ID mapping for each Brand:
 SLAVE_ID_MAP = {
     Brand.SMA: 126,
     Brand.SOLAREDGE: 1,
+    Brand.GENERAL_SUNSPEC: None,
 }
 
 # SunSpec model IDs
@@ -46,12 +47,21 @@ DER_MEASURE_AC_MID = 701
 DER_CAPACITY_MID = 702
 DER_CTL_AC_MID = 704
 
-# SunSpec offsets
+# SunSpec offsets (See information model reference: https://sunspec.org/specifications/)
     # 100 series
-WRTG_OFFSET_1XX = 3  # rated nominal power of inverter
-W_OFFSET_1XX = 14  # AC power
-WMAXLIMPCT_OFFSET_1XX = 5  # Set power output to specified level
+WRTG_OFFSET_1XX = 3
+WMAXLIMPCT_OFFSET_1XX = 5
+WMAXLIMPCT_WINTMS_OFFSET_1XX = 6
+WMAXLIMPCT_RVRTTMS_OFFSET_1XX = 7
+WMAXLIMPCT_RMPTMS_OFFSET_1XX = 8
+WMAXLIM_ENA_OFFSET_1XX = 9
+W_OFFSET_1XX = 14
+
     # 700 series
 WRTG_OFFSET_7XX = 2
 W_OFFSET_7XX = 10
+WMAXLIMPCTENA_OFFSET_7XX = 14
 WMAXLIMPCT_OFFSET_7XX = 15
+WMAXLIMPCTRVRT_OFFSET_7XX = 16
+WMAXLIMPCTENARVRT_OFFSET_7XX = 17
+WMAXLIMPCTRVRTTMS_OFFSET_7XX = 18

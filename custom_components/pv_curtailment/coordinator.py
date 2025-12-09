@@ -50,6 +50,8 @@ class PvCurtailingCoordinator(DataUpdateCoordinator):
         self.W_offset: int | None = None
         self.WRtg_offset: int | None = None
         self.WMaxLimPct_offset: int | None = None
+        self.WMaxLimPctEna_offset: int | None = None
+        self.WMaxLimPctRvrtTms: int | None = None
 
         # unpack config
         config = hass.data[DOMAIN][CONFIG]
@@ -205,6 +207,14 @@ class PvCurtailingCoordinator(DataUpdateCoordinator):
         _LOGGER.error(f"SunSpec point with model id: {mid}, and offset: {trg_offset}, was not found and could not be read")
         return None
     
+    def offset_set(self, d, mid: int | None, trg_offset: int | None, cvalue: float) -> None:
+        """Set cvalue of SunSpec point on SunSpecModbusClientDeviceTCP instance"""
+        if mid is None or trg_offset is None:
+            return
+        for name, point in d.models[mid][0].points.items():
+            if point.offset == trg_offset:
+                point.cvalue = cvalue
+    
     def offset_get(self, d, mid: int, trg_offset: int) -> float | None:
         """Get a value from SunSpec device python instance, without reading"""
         for name, point in d.models[mid][0].points.items():
@@ -238,9 +248,15 @@ class PvCurtailingCoordinator(DataUpdateCoordinator):
         if DER_CTL_AC_MID in d.models:
             self.controls_mid = DER_CTL_AC_MID
             self.WMaxLimPct_offset = WMAXLIMPCT_OFFSET_7XX
+            self.WMaxLimPctEna_offset = WMAXLIMPCTENA_OFFSET_7XX
+            self.WMaxLimPctRvrtTms = WMAXLIMPCTRVRTTMS_OFFSET_7XX
+
         elif CONTROLS_MID in d.models:
             self.controls_mid = CONTROLS_MID
             self.WMaxLimPct_offset = WMAXLIMPCT_OFFSET_1XX
+            self.WMaxLimPctEna_offset = WMAXLIM_ENA_OFFSET_1XX
+            self.WMaxLimPctRvrtTms = WMAXLIMPCT_RVRTTMS_OFFSET_1XX
+
         else:
             _LOGGER.error("No controls model was found on the SunSpec device, this integration will now freeze")
             self.shutdown_flag = True
@@ -279,10 +295,21 @@ class PvCurtailingCoordinator(DataUpdateCoordinator):
                         _LOGGER.error(f"Failed to write setpoint to inverter. Write error: {e}")
                         return
                 
-                #SolarEdge
+                # SolarEdge
                 elif self.brand == Brand.SOLAREDGE:
                     self.last_setpoint_W = self.setpoint_W
                     _LOGGER.warning("Writing setpoints to this inverter is not yet implemented, but is planned for the future")
+                
+                # General SunSpec
+                elif self.brand == Brand.GENERAL_SUNSPEC:
+                    self.offset_set(d=self.d, mid=self.controls_mid, trg_offset=self.WMaxLimPct_offset, cvalue=sp_pct)
+                    self.offset_set(d=self.d, mid=self.controls_mid, trg_offset=self.WMaxLimPctEna_offset, cvalue=1)
+                    self.offset_set(d=self.d, mid=self.controls_mid, trg_offset=self.WMaxLimPctRvrtTms, cvalue=120)
+                    try:
+                        d.models[self.controls_mid][0].write()
+                    except Exception as e:
+                        _LOGGER.error(f"Failed to write sunspec controls model. Write error: {e}")
+
                 else:
                     _LOGGER.error("Writing setpoint to this inverter brand is not implemented")
                     return
