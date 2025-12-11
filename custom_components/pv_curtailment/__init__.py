@@ -1,7 +1,4 @@
 import logging
-import voluptuous as vol
-
-import homeassistant.helpers.config_validation as cv
 
 from homeassistant import config_entries
 from homeassistant.core import HomeAssistant
