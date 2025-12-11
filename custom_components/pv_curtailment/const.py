@@ -17,8 +17,8 @@ CONF_CONNECT_STEP = "connect_step"
 CONF_ENERGY_METER_STEP = "energy_meter_step"
 CONF_INJ_TARIFF_STEP = "inj_tariff_step"
 
-INJ_CUTOFF_TARIFF = 200  # [€/MwH] (200 as temporary testing value)
-UPDATE_INTERVAL = 10  # [s]
+INJ_CUTOFF_TARIFF = 0  # [€/Mwh]
+UPDATE_INTERVAL = 15   # [s]
 
 # Supported brands
 class Brand(StrEnum):
