@@ -3,7 +3,6 @@ import logging
 
 from typing import Any
 from homeassistant import config_entries
-import homeassistant.helpers.config_validation as cv
 from homeassistant.helpers.selector import selector, EntitySelector, EntityFilterSelectorConfig
 from .const import *
 
