@@ -1,11 +1,14 @@
 # PV Curtailment
-Custom integration for Home Assistant HACS to curtail PV inverter during negative feed-in tarriffs.
+Custom integration for Home Assistant HACS to curtail PV inverter during negative feed-in tarriffs, as well as general power monitoring.
 
 ## Exposed entities
 This component adds the following entities to Home Assistant:
 - Active power output of the inverter
 - Setpoint of active power output that is sent to the inverter
 - System switch with which the entire system can be enabled or disabled
+
+If the system switch is disabled, this integration functions as a regular power monitoring tool.
+Note: the system switch does not keep its state over reboots of Home Assistant. It will always default to 'off'. So please reactivate the switch after a reboot (update, power loss,...).
 
 ## Installation
 Installing this custom component can be done with [HACS](https://hacs.xyz) by searching for "PV Curtailment".
