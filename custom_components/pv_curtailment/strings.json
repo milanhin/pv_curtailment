@@ -1,0 +1,30 @@
+{
+    "config": {
+        "step": {
+            "user": {
+                "title": "Inverter brand",
+                "description": "Select your inverter brand"
+            },
+            "connect": {
+                "title": "Connect to inverter",
+                "description": "Configure Modbus TCP settings"
+            },
+            "energy_meter": {
+                "title": "Energy meter entities",
+                "description": "Select the power import (power consumption) and export (power injection) entities that are read from the energy meter",
+                "data": {
+                    "power_import_entity_id": "Power consumption",
+                    "power_export_entity_id": "Power injection"
+                }
+            },
+            "pricing": {
+                "title": "Energy pricing entities",
+                "description": "Select the electricity price and injection tariff entities",
+                "data": {
+                    "injection_tariff_entity_id": "Injection tariff",
+                    "electricity_price_entity_id": "electricity price (incl. network costs)"
+                }
+            }
+        }
+    }
+}
