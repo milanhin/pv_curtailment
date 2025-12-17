@@ -26,8 +26,10 @@ If you would encounter any problems, submit an [issue](https://github.com/milanh
 ## Configuration
 Configuration is done through the UI by going to settings -> integrations -> add the PV Curtailment integration.
 During configuration, the IP adress, port and Modbus slave ID need to be set, and the brand of inverter needs to be chosen from the list.
-This integration depends on a few other entities that are selected during configuration:
-- Injection tariff: the current injection tariff from the day-ahead market, to be set in €/MWh. Possible integration for Belgian prices: [SDAC Elia](https://github.com/milanhin/sdac_elia)
+This integration also depends on a few other entities that are selected during configuration:
+- Electricity price and injection tariff based on day-ahead market, to be set in €/MWh. Possible integration for Belgian prices: [SDAC Elia](https://github.com/milanhin/sdac_elia)
+  - Electricity price: must be total cost for the user, so including network costs 
+  - Injection tariff
 - Power import and export from/to the grid, coming from your digital energy meter. Possible integration for DSMR meters: [DSMR Smart Meter](https://www.home-assistant.io/integrations/dsmr/)
 
 For more information, a detailed Dutch guide is available [here](https://github.com/milanhin/pv_curtailment/blob/main/PV_curtailment_handleiding.pdf).
