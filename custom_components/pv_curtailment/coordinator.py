@@ -23,7 +23,7 @@ class PvCurtailingCoordinator(DataUpdateCoordinator):
         super().__init__(
             hass=hass,
             logger=_LOGGER,
-            name="PV_Curtailing_coordinator",
+            name="pv_curtailment_coordinator",
             config_entry=None,
             update_interval=datetime.timedelta(seconds=UPDATE_INTERVAL),
         )
