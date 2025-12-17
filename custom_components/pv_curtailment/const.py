@@ -6,6 +6,7 @@ CONFIG = "config"
 SERIAL_NUMBER = "serial_number"
 
 CONF_INJ_TARIFF_ENT_ID = "injection_tariff_entity_id"
+CONF_PRICE_ENT_ID = "electricity_price_entity_id"
 CONF_PWR_IMP_ENT_ID = "power_import_entity_id"
 CONF_PWR_EXP_ENT_ID = "power_export_entity_id"
 CONF_INVERTER_BRAND = "inverter_brand"
@@ -15,9 +16,10 @@ CONF_SLAVE_ID = "slave_id"
 CONF_USER_STEP = "user_step"
 CONF_CONNECT_STEP = "connect_step"
 CONF_ENERGY_METER_STEP = "energy_meter_step"
-CONF_INJ_TARIFF_STEP = "inj_tariff_step"
+CONF_PRICING_STEP = "pricing_step"
 
 INJ_CUTOFF_TARIFF = 0  # [€/Mwh]
+PRODUCTION_CUTOFF_TARIFF = 0  # [€/MWh]
 UPDATE_INTERVAL = 15   # [s]
 
 # Supported brands
@@ -32,8 +34,8 @@ class Brand(StrEnum):
 # default slave ID mapping for each Brand:
 SLAVE_ID_MAP = {
     Brand.SMA: 126,
-    Brand.SOLAREDGE: 1,
-    Brand.GENERAL_SUNSPEC: None,
+    Brand.SOLAREDGE: 502,
+    Brand.GENERAL_SUNSPEC: 502,
 }
 
 # SunSpec model IDs

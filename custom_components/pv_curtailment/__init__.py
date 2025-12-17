@@ -26,7 +26,5 @@ async def async_setup_entry(
         return False
 
     # Forward setup to platforms
-    hass.async_create_task(
-        hass.config_entries.async_forward_entry_setups(entry=entry, platforms=["sensor", "switch"])
-    )
+    await hass.config_entries.async_forward_entry_setups(entry=entry, platforms=["sensor", "switch"])
     return True

@@ -53,7 +53,8 @@ class PvCurtailingCoordinator(DataUpdateCoordinator):
 
         # unpack config
         config = hass.data[DOMAIN][CONFIG]
-        self.inj_trf_ent_id: str = config[CONF_INJ_TARIFF_STEP][CONF_INJ_TARIFF_ENT_ID]
+        self.inj_trf_ent_id: str = config[CONF_PRICING_STEP][CONF_INJ_TARIFF_ENT_ID]
+        self.price_ent_id:   str = config[CONF_PRICING_STEP][CONF_PRICE_ENT_ID]
         self.pwr_imp_ent_id: str = config[CONF_ENERGY_METER_STEP][CONF_PWR_IMP_ENT_ID]
         self.pwr_exp_ent_id: str = config[CONF_ENERGY_METER_STEP][CONF_PWR_EXP_ENT_ID]
         self.IP:             str = config[CONF_CONNECT_STEP][CONF_IP]
@@ -107,6 +108,7 @@ class PvCurtailingCoordinator(DataUpdateCoordinator):
 
         # Read states from dependant sensors
         inj_tariff_state = self.hass.states.get(self.inj_trf_ent_id)
+        price_state = self.hass.states.get(self.price_ent_id)
         pwr_import_state = self.hass.states.get(self.pwr_imp_ent_id)
         pwr_export_state = self.hass.states.get(self.pwr_exp_ent_id)
 
@@ -114,13 +116,15 @@ class PvCurtailingCoordinator(DataUpdateCoordinator):
         if (
             inj_tariff_state == None or
             pwr_import_state == None or
-            pwr_export_state == None
+            pwr_export_state == None or
+            price_state == None
         ):
             _LOGGER.warning("An entity needed for this integration has no value")
             return {}
 
         # Exctract data from dependant sensors
         inj_tariff = float(inj_tariff_state.state)
+        price = float(price_state.state)
         pwr_import = self.convert_pwr_state_to_watt(pwr_import_state)
         pwr_export = self.convert_pwr_state_to_watt(pwr_export_state)
 
@@ -133,7 +137,7 @@ class PvCurtailingCoordinator(DataUpdateCoordinator):
         # Calculate setpoints for inverter power and send it to inverter
         if self.system_switch:
             if self.W != None and self.WRtg != None and pwr_export != None and pwr_import != None:
-                self.setpoint_W = self.calc_setpoint_W(inj_tariff, pwr_import, pwr_export, self.W, pwr_rated=self.WRtg)
+                self.setpoint_W = self.calc_setpoint_W(inj_tariff, price, pwr_import, pwr_export, self.W, pwr_rated=self.WRtg)
                 self.setpoint_pct = self.calc_setpoint_pct(sp_W=self.setpoint_W, pwr_rated=self.WRtg)
                 if not (self.last_setpoint_W == self.WRtg and self.setpoint_W == self.WRtg):  # Don't keep sending 100% setpoints       
                     await self.write_setpoint(d=self.d, sp_pct=self.setpoint_pct)
@@ -173,12 +177,15 @@ class PvCurtailingCoordinator(DataUpdateCoordinator):
             _LOGGER.error(f"Provided power entity {state.entity_id} has no known unit")
             return None
     
-    def calc_setpoint_W(self, inj_tariff: float, pwr_import: float, pwr_export: float, pwr_PV: float, pwr_rated: float) -> int:
+    def calc_setpoint_W(self, inj_tariff: float, price: float, pwr_import: float, pwr_export: float, pwr_PV: float, pwr_rated: float) -> int:
         # Only update setpoint if energy meter data has been updated
         if pwr_import == self.last_import_pwr and pwr_export == self.last_export_pwr and self.setpoint_W != None:
             sp = self.setpoint_W
             return round(sp)
         
+        if price < PRODUCTION_CUTOFF_TARIFF:
+            return 0
+
         if inj_tariff >= INJ_CUTOFF_TARIFF:
             return round(pwr_rated)
         

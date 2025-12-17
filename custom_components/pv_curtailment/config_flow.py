@@ -32,9 +32,10 @@ ENERGY_METER_SCHEMA = vol.Schema(
     }
 )
 
-INJ_TARIFF_SCHEMA = vol.Schema(
+PRICING_SCHEMA = vol.Schema(
     {
         vol.Required(CONF_INJ_TARIFF_ENT_ID): EntitySelector(EntityFilterSelectorConfig(domain=["sensor", "input_number", "number"])),
+        vol.Required(CONF_PRICE_ENT_ID): EntitySelector(EntityFilterSelectorConfig(domain=["sensor", "input_number", "number"])),
     }
 )
 
@@ -83,16 +84,16 @@ class PvCurtailmentConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
         if user_input is not None:
             self.data[CONF_ENERGY_METER_STEP] = user_input
-            return await self.async_step_inj_tariff()
+            return await self.async_step_pricing()
         
         return self.async_show_form(step_id="energy_meter", data_schema=ENERGY_METER_SCHEMA, errors=errors)
     
-    async def async_step_inj_tariff(self, user_input: dict[str, Any] | None = None) -> config_entries.ConfigFlowResult:
+    async def async_step_pricing(self, user_input: dict[str, Any] | None = None) -> config_entries.ConfigFlowResult:
         """Configure SDAC injection tariff entity ID"""
         errors = {}
 
         if user_input is not None:
-            self.data[CONF_INJ_TARIFF_STEP] = user_input
+            self.data[CONF_PRICING_STEP] = user_input
             return self.async_create_entry(title=DOMAIN, data=self.data)
         
-        return self.async_show_form(step_id="inj_tariff", data_schema=INJ_TARIFF_SCHEMA)
+        return self.async_show_form(step_id="pricing", data_schema=PRICING_SCHEMA)
