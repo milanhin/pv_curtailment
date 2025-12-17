@@ -5,6 +5,7 @@ Custom integration for Home Assistant HACS to curtail PV inverter during negativ
 This integration will curtail a residential PV inverter. Controlling your inverter makes sense for users with a dynamic pricing energy contract (15-minute based). During negative injection tarriffs, it will control the inverter to prevent power injection onto the grid. When the total electricity price (incl network costs) is negative, the inverter will be shut off entirely to exploit the fact that you get reimbursed for using electricity at that moment. The entire curtailing system is only active when the provided switch entity is enabled.
 
 Next to curtailment, this integration can be used to monitor power production of the inverter. 
+
 An overview (Dutch) about this topic and integration is available [here](https://github.com/milanhin/pv_curtailment/blob/main/PV_curtailment_met_HA.pdf).
 
 ## Exposed entities
