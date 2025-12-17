@@ -26,5 +26,33 @@
                 }
             }
         }
+    },
+    "options": {
+        "step": {
+            "init": {
+                "title": "Omvormermerk",
+                "description": "Selecteer het merk van uw omvormer"
+            },
+            "connect": {
+                "title": "Verbinding maken met omvormer",
+                "description": "Modbus TCP-instellingen configureren"
+            },
+            "energy_meter": {
+                "title": "Energiemeter-entiteiten",
+                "description": "Selecteer de entiteiten voor afnamevermogen en injectievermogen die worden uitgelezen van de energiemeter",
+                "data": {
+                    "power_import_entity_id": "Afnamevermogen",
+                    "power_export_entity_id": "Injectievermogen"
+                }
+            },
+            "pricing": {
+                "title": "Energieprijs-entiteiten",
+                "description": "Selecteer de entiteiten voor de elektriciteitsprijs en het injectietarief",
+                "data": {
+                    "injection_tariff_entity_id": "Injectietarief",
+                    "electricity_price_entity_id": "Elektriciteitsprijs (incl. nettarieven)"
+                }
+            }
+        }
     }
 }

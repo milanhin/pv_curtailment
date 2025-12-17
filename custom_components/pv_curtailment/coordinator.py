@@ -331,9 +331,10 @@ class PvCurtailingCoordinator(DataUpdateCoordinator):
 
         while not is_connected:
             self.sleep = True
+            if self.d is not None:
+                self.d.close()
             await asyncio.sleep(sleep_time)
             try:
-                self.d = None
                 self.d = await self.hass.async_add_executor_job(self.connect_and_scan)  # blocking call
                 if len(self.d.models) == 0:
                     _LOGGER.error("Modbus client succesfully reconnected to slave, but no SunSpec models are available. This integration will now shut down, a manual restart of Home Assistant is required to resume.")
