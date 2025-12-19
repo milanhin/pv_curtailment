@@ -6,7 +6,7 @@ This integration will curtail a residential PV inverter. Controlling your invert
 
 Next to curtailment, this integration can be used to monitor power production of the inverter. 
 
-An overview (Dutch) about this topic and integration is available [here](https://github.com/milanhin/pv_curtailment/blob/main/PV_curtailment_met_HA.pdf).
+An overview (Dutch) about this topic and integration is available [here](https://github.com/milanhin/pv_curtailment/blob/main/PV_curtailment_met_HA.pdf), and a manual (Dutch) that guides through the entire set-up process is available [here](https://github.com/milanhin/pv_curtailment/blob/main/PV_curtailment_handleiding.pdf).
 
 ## Exposed entities
 This component adds the following entities to Home Assistant:
@@ -38,5 +38,3 @@ This integration also depends on a few other entities that are selected during c
   - Electricity price: must be total cost for the user, so including network costs 
   - Injection tariff
 - Power import and export from/to the grid, coming from your digital energy meter. Possible integration for DSMR meters: [DSMR Smart Meter](https://www.home-assistant.io/integrations/dsmr/)
-
-For more information, a detailed Dutch guide is available [here](https://github.com/milanhin/pv_curtailment/blob/main/PV_curtailment_handleiding.pdf).
